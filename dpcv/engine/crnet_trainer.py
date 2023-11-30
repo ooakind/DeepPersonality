@@ -6,7 +6,26 @@ import math
 import os
 from .build import TRAINER_REGISTRY
 
+import yaml
+import wandb
+from easydict import EasyDict as CfgNode
 
+config = r'/home/hyojinju/DeepPersonality/config/unified_frame_images/04_crnet.yaml'
+with open(config, 'r') as f:
+    yaml_cfg = CfgNode(yaml.safe_load(f))
+
+# start a new wandb run to track this script
+wandb.init(
+    # set the wandb project where this run will be logged
+    project="cr_net_training",
+    
+    # track hyperparameters and run metadata
+    config={
+    "learning_rate": yaml_cfg.SOLVER.LR_INIT,
+    "architecture": yaml_cfg.MODEL.NAME,
+    "epochs": yaml_cfg.TRAIN.MAX_EPOCH,
+    }
+)
 class CRNetTrainer(BiModalTrainer):
 
     def train(self, data_loader, model, loss_f, optimizer, epoch_idx):
@@ -263,6 +282,9 @@ class CRNetTrainer2(BiModalTrainer):
             print("only test regression accuracy")
             return
 
+        wandb.log({
+            "epoch": epoch_idx + 1, "train_mean_acc": float(self.clt.epoch_train_acc), "valid_mean_acc": float(self.clt.epoch_valid_acc)
+        })
         self.logger.info(
             "Valid: Epoch[{:0>3}/{:0>3}] Train Mean_Acc: {:.2%} Valid Mean_Acc:{:.2%} OCEAN_ACC:{}\n".
             format(

@@ -77,3 +77,5 @@ _darcs
 
 /datasets/ChaLearn2016_tiny
 /datasets/ChaLearn2016_tiny_raw
+
+wandb
