@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from mmcv import Config
+from mmengine.config import Config
 import numpy as np
 
 
