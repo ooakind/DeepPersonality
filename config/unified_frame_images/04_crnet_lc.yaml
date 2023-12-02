@@ -1,0 +1,38 @@
+DATA:
+  ROOT: "datasets/"
+  TRAIN_IMG_DATA: "ChaLearn2016_tiny/train_data"
+  VALID_IMG_DATA: "ChaLearn2016_tiny/valid_data"
+  TEST_IMG_DATA: "ChaLearn2016_tiny/test_data"
+  TRAIN_IMG_ALBEDO_DATA: "ChaLearn2016_tiny/train_data_albedo"
+  VALID_IMG_ALBEDO_DATA: "ChaLearn2016_tiny/valid_data_albedo"
+  TEST_IMG_ALBEDO_DATA: "ChaLearn2016_tiny/test_data_albedo"
+  TRAIN_IMG_SHADING_DATA: "ChaLearn2016_tiny/train_data_shading"
+  VALID_IMG_SHADING_DATA: "ChaLearn2016_tiny/valid_data_shading"
+  TEST_IMG_SHADING_DATA: "ChaLearn2016_tiny/test_data_shading"
+  TRAIN_AUD_DATA: "ChaLearn2016_tiny/voice_data/voice_librosa/train_data"
+  VALID_AUD_DATA: "ChaLearn2016_tiny/voice_data/voice_librosa/valid_data"
+  TEST_AUD_DATA: "ChaLearn2016_tiny/voice_data/voice_librosa/test_data"
+  TRAIN_LABEL_DATA: "ChaLearn2016_tiny/annotation/annotation_training.pkl"
+  VALID_LABEL_DATA: "ChaLearn2016_tiny/annotation/annotation_validation.pkl"
+  TEST_LABEL_DATA: "ChaLearn2016_tiny/annotation/annotation_test.pkl"
+DATA_LOADER:
+  NAME: "crnet_lc_data_loader"
+  TRANSFORM: "crnet_frame_face_transform"
+  TRAIN_BATCH_SIZE: 10
+  VALID_BATCH_SIZE: 10
+  NUM_WORKERS: 4
+MODEL:
+  NAME: "crnet_lc_model"
+LOSS:
+  NAME: "crnet_loss_func"
+SOLVER:
+  NAME: "crnet_solver"
+  SCHEDULER: "crnet_multi_step_scale"
+  LR_INIT: 0.002
+  WEIGHT_DECAY: 0.005
+  MOMENTUM: 0.9
+  MILESTONE: [80, 90]
+TRAIN:
+  TRAINER: "CRNetTrainer2"
+  MAX_EPOCH: 100
+  OUTPUT_DIR: "results/unified_frame_images/04_crnet_lc"

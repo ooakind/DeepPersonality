@@ -10,7 +10,7 @@ import yaml
 import wandb
 from easydict import EasyDict as CfgNode
 
-config = r'/home/hyojinju/DeepPersonality/config/unified_frame_images/04_crnet.yaml'
+config = r'/home/hyojinju/DeepPersonality/config/unified_frame_images/04_crnet_lc.yaml'
 with open(config, 'r') as f:
     yaml_cfg = CfgNode(yaml.safe_load(f))
 
