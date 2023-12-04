@@ -1,22 +1,22 @@
 DATA:
-  ROOT: "datasets/"
-  TRAIN_IMG_DATA: "ChaLearn2016_tiny/train_data"
-  VALID_IMG_DATA: "ChaLearn2016_tiny/valid_data"
-  TEST_IMG_DATA: "ChaLearn2016_tiny/test_data"
-  TRAIN_IMG_FACE_DATA: "ChaLearn2016_tiny/train_data_face"
-  VALID_IMG_FACE_DATA: "ChaLearn2016_tiny/valid_data_face"
-  TEST_IMG_FACE_DATA: "ChaLearn2016_tiny/test_data_face"
-  TRAIN_AUD_DATA: "ChaLearn2016_tiny/voice_data/voice_librosa/train_data"
-  VALID_AUD_DATA: "ChaLearn2016_tiny/voice_data/voice_librosa/valid_data"
-  TEST_AUD_DATA: "ChaLearn2016_tiny/voice_data/voice_librosa/test_data"
-  TRAIN_LABEL_DATA: "ChaLearn2016_tiny/annotation/annotation_training.pkl"
-  VALID_LABEL_DATA: "ChaLearn2016_tiny/annotation/annotation_validation.pkl"
-  TEST_LABEL_DATA: "ChaLearn2016_tiny/annotation/annotation_test.pkl"
+  ROOT: "/"
+  TRAIN_IMG_DATA: "pitdatasets/ChaLearn/Full/train_data"
+  VALID_IMG_DATA: "pitdatasets/ChaLearn/Full/valid_data"
+  TEST_IMG_DATA: "pitdatasets/ChaLearn/Full/test_data"
+  TRAIN_IMG_FACE_DATA: "pitdatasets/ChaLearn/Full/train_data_face"
+  VALID_IMG_FACE_DATA: "pitdatasets/ChaLearn/Full/valid_data_face"
+  TEST_IMG_FACE_DATA: "pitdatasets/ChaLearn/Full/test_data_face"
+  TRAIN_AUD_DATA: "pitdatasets/ChaLearn/Full/voice_data/voice_librosa/train_data"
+  VALID_AUD_DATA: "pitdatasets/ChaLearn/Full/voice_data/voice_librosa/valid_data"
+  TEST_AUD_DATA: "pitdatasets/ChaLearn/Full/voice_data/voice_librosa/test_data"
+  TRAIN_LABEL_DATA: "pitdatasets/ChaLearn/Full/annotation/annotation_training.pkl"
+  VALID_LABEL_DATA: "pitdatasets/ChaLearn/Full/annotation/annotation_validation.pkl"
+  TEST_LABEL_DATA: "pitdatasets/ChaLearn/Full/annotation/annotation_test.pkl"
 DATA_LOADER:
   NAME: "crnet_data_loader"
   TRANSFORM: "crnet_frame_face_transform"
-  TRAIN_BATCH_SIZE: 10
-  VALID_BATCH_SIZE: 10
+  TRAIN_BATCH_SIZE: 30
+  VALID_BATCH_SIZE: 30
   NUM_WORKERS: 4
 MODEL:
   NAME: "crnet_model"
