@@ -356,16 +356,17 @@ class CRNetTrainer2(BiModalTrainer):
     def data_fmt(self, data):
         for k, v in data.items():
             data[k] = v.to(self.device)
-        inputs = data["glo_img"], data["loc_img"], data["wav_aud"]
+        inputs = data["glo_img"], data["albedo_img"], data["shading_img"], data["wav_aud"]
         cls_label, reg_label = data["cls_label"], data["reg_label"]
         return inputs, cls_label, reg_label
 
     def full_test_data_fmt(self, data):
         glo_imgs = torch.stack(data["glo_img"], 0).to(self.device)
-        loc_imgs = torch.stack(data["loc_img"], 0).to(self.device)
+        albedo_imgs = torch.stack(data["albedo_img"], 0).to(self.device)
+        shading_imgs = torch.stack(data["shading_img"], 0).to(self.device)
         wav_aud = data["wav_aud"].repeat(len(glo_imgs), 1, 1, 1).to(self.device)
 
-        inputs = glo_imgs, loc_imgs, wav_aud
+        inputs = glo_imgs, albedo_imgs,shading_imgs, wav_aud
         label = data["reg_label"]
         return inputs, label
 

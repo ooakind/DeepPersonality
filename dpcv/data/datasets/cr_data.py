@@ -159,21 +159,21 @@ class CRNetLCData(VideoData):
 
         glo_img_dir = self.img_dir_ls[idx]
         if "train" in glo_img_dir:
-            albedo_img_dir = glo_img_dir.replace("train_data", "train_data_albedo")
-            shading_img_dir = glo_img_dir.replace("train_data", "train_data_shading")
+            albedo_img_dir = glo_img_dir.replace("train_data", "train_data_face_decomposed/albedo")
+            shading_img_dir = glo_img_dir.replace("train_data", "train_data_face_decomposed/shading")
         elif "valid" in glo_img_dir:
-            albedo_img_dir = glo_img_dir.replace("valid_data", "valid_data_albedo")
-            shading_img_dir = glo_img_dir.replace("valid_data", "valid_data_shading")
+            albedo_img_dir = glo_img_dir.replace("valid_data", "valid_data_face_decomposed/albedo")
+            shading_img_dir = glo_img_dir.replace("valid_data", "valid_data_face_decomposed/shading")
         else:
-            albedo_img_dir = glo_img_dir.replace("test_data", "test_data_albedo")
-            shading_img_dir = glo_img_dir.replace("test_data", "test_data_shading")
+            albedo_img_dir = glo_img_dir.replace("test_data", "test_data_face_decomposed/albedo")
+            shading_img_dir = glo_img_dir.replace("test_data", "test_data_face_decomposed/shading")
         # in case some video doesn't get aligned face images
         if os.path.basename(albedo_img_dir) not in self.albedo_img_dir_ls: # since albedo & shading has same alignment
             return self.get_imgs(idx + 1)
         albedo_imgs = glob.glob(albedo_img_dir + "/*.jpg")
         shading_imgs = glob.glob(shading_img_dir + "/*.jpg")
-        albedo_imgs = sorted(albedo_imgs, key=lambda x: int(Path(x).stem[5:]))
-        shading_imgs = sorted(shading_imgs, key=lambda x: int(Path(x).stem[5:]))
+        albedo_imgs = sorted(albedo_imgs, key=lambda x: int(Path(x).stem.split("_")[1]))
+        shading_imgs = sorted(shading_imgs, key=lambda x: int(Path(x).stem.split("_")[1]))
         # according to the paper sample 32 frames per video
         separate = np.linspace(0, len(albedo_imgs), self.sample_size, endpoint=False, dtype=np.int16)
         img_index = random.choice(separate)
@@ -193,9 +193,9 @@ class CRNetLCData(VideoData):
 
     @staticmethod
     def _match_img(loc_img_pt):
-        img_dir = os.path.dirname(loc_img_pt).replace("_albedo", "")
+        img_dir = os.path.dirname(loc_img_pt).replace("_face_decomposed/albedo", "")
         img_name, _ = os.path.basename(loc_img_pt).split(".")
-        img_id = int(img_name.split("_")[-1])
+        img_id = int(img_name.split("_")[-2])
         glo_img_name = "frame_" + str(img_id) + ".jpg"
         glo_img_path = os.path.join(img_dir, glo_img_name)
         if os.path.exists(glo_img_path):
@@ -295,21 +295,21 @@ class AllFrameCRNetLCData(CRNetLCData):
     def get_imgs(self, idx):
         glo_img_dir = self.img_dir_ls[idx]
         if "train" in glo_img_dir:
-            albedo_img_dir = glo_img_dir.replace("train_data", "train_data_albedo")
-            shading_img_dir = glo_img_dir.replace("train_data", "train_data_shading")
+            albedo_img_dir = glo_img_dir.replace("train_data", "train_data_face_decomposed/albedo")
+            shading_img_dir = glo_img_dir.replace("train_data", "train_data_face_decomposed/shading")
         elif "valid" in glo_img_dir:
-            albedo_img_dir = glo_img_dir.replace("valid_data", "valid_data_albedo")
-            shading_img_dir = glo_img_dir.replace("valid_data", "valid_data_shading")
+            albedo_img_dir = glo_img_dir.replace("valid_data", "valid_data_face_decomposed/albedo")
+            shading_img_dir = glo_img_dir.replace("valid_data", "valid_data_face_decomposed/shading")
         else:
-            albedo_img_dir = glo_img_dir.replace("test_data", "test_data_albedo")
-            shading_img_dir = glo_img_dir.replace("test_data", "test_data_shading")
+            albedo_img_dir = glo_img_dir.replace("test_data", "test_data_face_decomposed/albedo")
+            shading_img_dir = glo_img_dir.replace("test_data", "test_data_face_decomposed/shading")
         # in case some video doesn't get aligned face images
         if os.path.basename(albedo_img_dir) not in self.albedo_img_dir_ls: # since albedo & shading has same alignment
             return self.get_imgs(idx + 1)
         albedo_imgs = glob.glob(albedo_img_dir + "/*.jpg")
         shading_imgs = glob.glob(shading_img_dir + "/*.jpg")
-        albedo_imgs = sorted(albedo_imgs, key=lambda x: int(Path(x).stem[5:]))
-        shading_imgs = sorted(shading_imgs, key=lambda x: int(Path(x).stem[5:]))
+        albedo_imgs = sorted(albedo_imgs, key=lambda x: int(Path(x).stem.split("_")[1]))
+        shading_imgs = sorted(shading_imgs, key=lambda x: int(Path(x).stem.split("_")[1]))
         # according to the paper sample 32 frames per video
         albedo_img_ls, shading_img_ls, glo_img_ls = [], [], []
         # separate = np.linspace(0, len(loc_imgs), self.sample_size, endpoint=False, dtype=np.int16)

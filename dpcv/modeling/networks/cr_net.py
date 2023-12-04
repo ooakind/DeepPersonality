@@ -198,10 +198,10 @@ class CRNetLC(nn.Module):
     def set_train_regressor(self):
         self.train_regressor = True
 
-    def forward(self, global_img, local_img, audio_wav):
+    def forward(self, global_img, albedo_img, shading_img, audio_wav):
         glo_feature = self.global_img_branch(global_img)  # (bs, 512, 2, 2)
-        albedo_feature = self.albedo_img_branch(local_img)    # (bs, 512, 2, 2)
-        shading_feature = self.shading_img_branch(local_img)    # (bs, 512, 2, 2)
+        albedo_feature = self.albedo_img_branch(albedo_img)    # (bs, 512, 2, 2)
+        shading_feature = self.shading_img_branch(shading_img)    # (bs, 512, 2, 2)
         aud_feature = self.audio_branch(audio_wav)        # (bs, 512, 1, 4)
         # ---- first training stage class guide -----
         glo_cls = self.global_cls_guide(glo_feature)      # (bs, 5, 4)
