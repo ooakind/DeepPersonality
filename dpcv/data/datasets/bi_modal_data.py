@@ -61,7 +61,7 @@ class VideoData(Dataset):
 
     def get_ocean_label(self, index):
         video_path = self.img_dir_ls[index]
-        video_name = f"{os.path.basename(video_path)}.mp4"
+        video_name = f"{os.path.basename(video_path).split('__')[-1]}.mp4"
         score = [
             self.annotation["openness"][video_name],
             self.annotation["conscientiousness"][video_name],
