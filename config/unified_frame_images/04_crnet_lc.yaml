@@ -1,5 +1,5 @@
 DATA:
-  ROOT: "/data1/ChaLearnLC/" # "datasets/ChaLearnLC/" #"pitdatasets/ChaLearn/Tiny/"
+  ROOT: "/data1/ChaLearnLCFull" # "datasets/ChaLearnLC/" #"pitdatasets/ChaLearn/Tiny/"
   TRAIN_IMG_DATA: "train_data"
   VALID_IMG_DATA: "valid_data"
   TEST_IMG_DATA: "test_data"
@@ -18,8 +18,8 @@ DATA:
 DATA_LOADER:
   NAME: "crnet_lc_data_loader"
   TRANSFORM: "crnet_frame_face_transform"
-  TRAIN_BATCH_SIZE: 10
-  VALID_BATCH_SIZE: 10
+  TRAIN_BATCH_SIZE: 30
+  VALID_BATCH_SIZE: 30
   NUM_WORKERS: 4
 MODEL:
   NAME: "crnet_lc_model"

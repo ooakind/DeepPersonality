@@ -11,6 +11,9 @@ from .build import DATA_LOADER_REGISTRY
 from dpcv.data.transforms.transform import set_crnet_transform, crnet_frame_face_transform
 from dpcv.data.transforms.build import build_transform_spatial
 
+valid_data_no_voice = ['validation80_25__elqfjsld__aL0oPOOeoB8.000', 'validation80_04__elqfjsld__r93dLeVRk3U.005']
+
+test_data_no_voice = ['test80_04__elqfjsld__53gtUkC7IZM.000', 'test80_06__elqfjsld__T1_6sVNHG70.002', 'test80_24__elqfjsld__Vj-Cmtqv_qY.004', 'test80_07__elqfjsld__G-25EWOIGNs.003']
 
 class CRNetData(VideoData):
     def __init__(self, data_root, img_dir, face_img_dir, audio_dir, label_file, transform=None, sample_size=100):
@@ -156,7 +159,14 @@ class CRNetLCData(VideoData):
         return one_hot_cls
 
     def get_imgs(self, idx):
-
+        for f in valid_data_no_voice:
+            if f in self.img_dir_ls[idx]:
+                print(f"No voice data: {self.img_dir_ls[idx]}")
+                return self.get_imgs(idx + 1)
+        for f in test_data_no_voice:
+            if f in self.img_dir_ls[idx]:
+                print(f"No voice data: {self.img_dir_ls[idx]}")
+                return self.get_imgs(idx + 1)
         glo_img_dir = self.img_dir_ls[idx]
         if "train" in glo_img_dir:
             albedo_img_dir = glo_img_dir.replace("train_data", "train_data_face_decomposed/albedo")
@@ -174,6 +184,9 @@ class CRNetLCData(VideoData):
         shading_imgs = glob.glob(shading_img_dir + "/*.jpg")
         albedo_imgs = sorted(albedo_imgs, key=lambda x: int(Path(x).stem.split("_")[1]))
         shading_imgs = sorted(shading_imgs, key=lambda x: int(Path(x).stem.split("_")[1]))
+        if len(albedo_imgs) == 0:
+            print(f"Empty dir: {albedo_img_dir}")
+            return self.get_imgs(idx + 1)
         # according to the paper sample 32 frames per video
         separate = np.linspace(0, len(albedo_imgs), self.sample_size, endpoint=False, dtype=np.int16)
         img_index = random.choice(separate)
