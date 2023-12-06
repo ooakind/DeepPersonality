@@ -71,16 +71,16 @@ class CRNetData(VideoData):
                 return self.get_imgs(idx + 1)
         glo_img_dir = self.img_dir_ls[idx]
         if "train" in glo_img_dir:
-            loc_img_dir = glo_img_dir.replace("train_data", "train_data_face")
+            loc_img_dir = glo_img_dir.replace("train_data", "train_data_face_decomposed/albedo")
         elif "valid" in glo_img_dir:
-            loc_img_dir = glo_img_dir.replace("valid_data", "valid_data_face")
+            loc_img_dir = glo_img_dir.replace("valid_data", "valid_data_face_decomposed/albedo")
         else:
-            loc_img_dir = glo_img_dir.replace("test_data", "test_data_face")
+            loc_img_dir = glo_img_dir.replace("test_data", "test_data_face_decomposed/albedo")
         # in case some video doesn't get aligned face images
         if os.path.basename(loc_img_dir) not in self.face_img_dir_ls:
             return self.get_imgs(idx + 1)
         loc_imgs = glob.glob(loc_img_dir + "/*.jpg")
-        loc_imgs = sorted(loc_imgs, key=lambda x: int(Path(x).stem[5:]))
+        loc_imgs = sorted(loc_imgs, key=lambda x: int(Path(x).stem.split("_")[1]))
         if len(loc_imgs) == 0:
             print(f"Empty dir: {loc_img_dir}")
             return self.get_imgs(idx + 1)
@@ -102,9 +102,9 @@ class CRNetData(VideoData):
 
     @staticmethod
     def _match_img(loc_img_pt):
-        img_dir = os.path.dirname(loc_img_pt).replace("_face", "")
+        img_dir = os.path.dirname(loc_img_pt).replace("_face_decomposed/albedo", "")
         img_name, _ = os.path.basename(loc_img_pt).split(".")
-        img_id = int(img_name.split("_")[-1])
+        img_id = int(img_name.split("_")[-2])
         glo_img_name = "frame_" + str(img_id) + ".jpg"
         glo_img_path = os.path.join(img_dir, glo_img_name)
         if os.path.exists(glo_img_path):
@@ -148,17 +148,17 @@ class AllFrameCRNetData(CRNetData):
     def get_imgs(self, idx):
         glo_img_dir = self.img_dir_ls[idx]
         if "train" in glo_img_dir:
-            loc_img_dir = glo_img_dir.replace("train_data", "train_data_face")
+            loc_img_dir = glo_img_dir.replace("train_data", "train_data_face_decomposed/albedo")
         elif "valid" in glo_img_dir:
-            loc_img_dir = glo_img_dir.replace("valid_data", "valid_data_face")
+            loc_img_dir = glo_img_dir.replace("valid_data", "valid_data_face_decomposed/albedo")
         else:
-            loc_img_dir = glo_img_dir.replace("test_data", "test_data_face")
+            loc_img_dir = glo_img_dir.replace("test_data", "test_data_face_decomposed/albedo")
         # in case some video doesn't get aligned face images
         if os.path.basename(loc_img_dir) not in self.face_img_dir_ls:
             return self.get_imgs(idx + 1)
 
         loc_imgs = glob.glob(loc_img_dir + "/*.jpg")
-        loc_imgs = sorted(loc_imgs, key=lambda x: int(Path(x).stem[5:]))
+        loc_imgs = sorted(loc_imgs, key=lambda x: int(Path(x).stem.split("_")[1]))
 
         loc_img_ls, glo_img_ls = [], []
         # separate = np.linspace(0, len(loc_imgs), self.sample_size, endpoint=False, dtype=np.int16)
